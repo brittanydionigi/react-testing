@@ -5,17 +5,16 @@ let header = {method: 'cors'}
 export default class MeatIndex extends Component {
   constructor() {
     super();
+    this.state = {api_key: ''}
   }
 
   componentDidMount(e) {
-    // navigator.geolocation.getCurrentPosition(p => {
-      fetch(`http://api.icndb.com/jokes/random`).then(function(response) {
-        response.json()
-        .then(function(response) {
-          console.log(response)
-        })
+    fetch(`https://api.themoviedb.org/3/movie/76341?api_key=${this.state.api_key}`).then(function(response) {
+      response.json()
+      .then(function(response) {
+        console.log(response)
       })
-    // })
+    })
   }
 
   handleChange(e) {
