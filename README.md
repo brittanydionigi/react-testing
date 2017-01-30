@@ -1,6 +1,11 @@
-The Day I POOPED MYSELF
+Movie API
+
+
+createdb
+psql -f ./src/sql/users.sql
 
 ### API
+
 
 #### Users
 
@@ -13,14 +18,14 @@ To create an account - `/api/users/new`
   You must send all three into the body. Passwords are case sensitive.
   Keep in mind the response only gives the new user ID.
 
-To add favorites - `/users/favorites/new`
+To add favorites - `api/users/favorites/new`
   Once the user is signed in they should be able to save favorites.
   To save a favorite you must send in the movie_id, user_id and title, poster_path, release_date, vote_average, overview
 
-To get all favorites for a user - `/users/:id/favorites`
+To get all favorites for a user - `api/users/:id/favorites`
   To get a users favorite movies you need to send in the user ID.
 
-To delete a single favorite - `/users/:id/favorites/:favID`
+To delete a single favorite - `api/users/:id/favorites/:favID`
   To delete a users favorite you must send in the users id and id of the movie.
 
 
