@@ -15,7 +15,7 @@ To create an account - `/api/users/new`
 
 To add favorites - `/users/favorites/new`
   Once the user is signed in they should be able to save favorites.
-  To save a favorite you must send in the movie_id, user_id and title.
+  To save a favorite you must send in the movie_id, user_id and title, poster_path, release_date, vote_average, overview
 
 To get all favorites for a user - `/users/:id/favorites`
   To get a users favorite movies you need to send in the user ID.

@@ -14,10 +14,15 @@ CREATE TABLE favorites (
   id SERIAL NOT NULL PRIMARY KEY,
   movie_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
-  title VARCHAR (123) NOT NULL
+  title VARCHAR (123) NOT NULL,
+  poster_path VARCHAR (250) NOT NULL,
+  release_date VARCHAR (123) NOT NULL,
+  vote_average VARCHAR (123) NOT NULL,
+  overview VARCHAR NOT NULL
 );
 
-CREATE UNIQUE INDEX email on users (email);
+CREATE UNIQUE INDEX email ON users (email);
+
 
 INSERT INTO users (name, password, email)
   VALUES ('Taylor', 'password', 'tman2272@aol.com');

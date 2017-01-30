@@ -4,7 +4,7 @@
   "description": "MeatMeet",
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
-    "dev-server": "webpack-dev-server --hot --inline",
+    "dev-server": "webpack-dev-server --hot --inline --content-base --history-api-fallback",
     "start": "npm build && node src/app.js"
   },
   "keywords": [],
@@ -18,7 +18,10 @@
     "pg-promise": "^3.2.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-router": "^3.0.1"
+    "react-redux": "^5.0.2",
+    "react-router": "^3.0.1",
+    "react-router-redux": "^4.0.7",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

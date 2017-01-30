@@ -1,27 +1,45 @@
 import React, { Component } from 'react';
+import { Link, browserHistory } from 'react-router';
 
 export default class Login extends Component {
   constructor() {
     super();
-    this.state = { email: '', password: ''};
+    this.state = { email: 'tman2272@aol.com', password: 'password'};
   }
+
   handleSubmit(e) {
     e.preventDefault()
-    let body = this.handleLowerCase();
-    body.name = 'T$$$$$$$$'
-    fetch(`api/users/new`, {method: "POST", headers: {
+    const body = this.handleLowerCase();
+    fetch(`api/users`, { method: "POST", headers: {
     'Content-Type': 'application/json' },
-    body: JSON.stringify(body)}).then(function(response){
-      response.json().then(function(response) {
-        console.log(response) // depatch redux login
+    body: JSON.stringify(body)})
+    .then((response) => {
+      response.json()
+      .then((response) => {
+        console.log('success')
+        this.props.signInUser(response.data);
+        this.fetchFavorites(response.data.id);
       })
-    }).catch(function(error) {
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  fetchFavorites(id) {
+    fetch(`api/users/${id}/favorites`)
+    .then((response) => {
+      response.json()
+      .then((response) => {
+        this.props.recieveUserFavorites(response.data);
+        browserHistory.push('/');
+      })
+    }).catch((error) => {
       console.log(error)
     })
   }
 
   handleLowerCase() {
-    var { email, password } = this.state;
+    const { email, password } = this.state;
     return {
       email: email.toLowerCase(),
       password: password.toLowerCase()
@@ -34,12 +52,13 @@ export default class Login extends Component {
   }
 
   render() {
+    const { email, password } = this.state;
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         Email: <br/>
-        <input type='text' name='email' onChange={this.handleChange.bind(this)}/><br/>
+        <input type='text' value={email} name='email' onChange={this.handleChange.bind(this)}/><br/>
         Password: <br/>
-        <input type='text' name='password' onChange={this.handleChange.bind(this)}/><br/>
+        <input type='text' value={password} name='password' onChange={this.handleChange.bind(this)}/><br/>
         <input type='submit' value='Login'/><br/>
       </form>
     )
