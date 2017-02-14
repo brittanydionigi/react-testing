@@ -95,10 +95,10 @@ describe('userActions', () => {
     // test API endpoint failure
     let expectedAction = { type: "SIGN_IN_ERROR" };
 
-    fetchMock.post('/api/users', { status: 500 });
+    fetchMock.post('/api/users', { status: 500, body: {} });
 
-    return store.dispatch(actions.signIn({ email: 'garbage', password: 'baz' }))
-      .then(() => {
+    return store.dispatch(actions.signIn())
+      .catch(() => {
         let createdActions = store.getActions();
         expect(createdActions.length).toEqual(1);
         expect(createdActions[0]).toEqual(expectedAction);

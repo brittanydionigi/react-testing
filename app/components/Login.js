@@ -22,8 +22,10 @@ export default class Login extends Component {
     } else {
       signIn({ email, password })
         .then(response => {
+          console.log("YEP DONE HERE");
           browserHistory.push('/');
         }).catch((error) => {
+          console.log("CAUGHT ERROR");
           this.setState({
             error: 'Invalid credentials'
           });

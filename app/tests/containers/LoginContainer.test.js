@@ -6,16 +6,15 @@ import React from 'react'
 import { mount  } from 'enzyme'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import fetchMock from 'fetch-mock';
 
 import LoginContainer from '../../containers/LoginContainer'
 import Login from '../../components/Login'
 
 const mockStore = configureMockStore()({
   user: {
-    name: 'Brittany',
+    name: 'Bob Loblaw',
     id: 1,
-    favorites: [1, 2, 3, 4, 5]
+    email: 'foo@bar.com'
   }
 });
 
@@ -25,8 +24,7 @@ const setup = () => {
 
   return {
     Container,
-    Component,
-    mockStore
+    Component
   }
 }
 
@@ -35,24 +33,13 @@ describe('LoginContainer', () => {
 
   it('should pass the appropriate props from state', () => {
     expect(Component.props().user).toEqual({
-      name: 'Brittany',
+      name: 'Bob Loblaw',
       id: 1,
-      favorites: [1, 2, 3, 4, 5]
+      email: 'foo@bar.com'
     });
   });
 
   it('should pass down the correct action creators', () => {
     expect(Object.keys(Component.props())).toContain('signIn', 'signOut');
-  });
-
-  it('should create a SIGN_IN_ERROR action when signIn fails', () => {
-    // fetchMock.post('/api/users', Promise.reject());
-
-    // let submitButton = Component.find('button');
-    // submitButton.simulate('click');
-    // expect(fetchMock.called()).toEqual(true);
-
-    // console.log("MOCK STORE ACTIONS: ", mockStore.getActions());
-
   });
 });

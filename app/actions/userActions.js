@@ -20,24 +20,22 @@ function signIn(user) {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(user)
     })
-    .then(response => response.json())
-    .then(user => {
-      // which dispatches SIGN_IN when it resolves
-      dispatch({
-        type: SIGN_IN,
-        user: {
-          name: user.data.name,
-          id: user.data.id,
-          email: user.data.email
-        }
-      });
-    })
-    .catch(error => {
-      // or dispatches SIGN_IN_ERROR when it fails
-      dispatch({
-        type: SIGN_IN_ERROR
-      });
-    })
+    .then(response => {
+      if (response.status >= 400) {
+        dispatch({
+          type: SIGN_IN_ERROR
+        });
+        return response.json().then(err => { throw err; });
+      }
+      else {
+        return response.json().then(user => {
+          dispatch({
+            type: SIGN_IN,
+            user: user.data
+          });
+        });
+      }
+    });
   }
 }
 
