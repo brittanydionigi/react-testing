@@ -18,7 +18,7 @@ function userReducer(state = initialState, action) {
       return Object.assign({}, state, action.user);
       break
     case "SIGN_OUT":
-      return state;
+      return initialState;
       break
     default:
       return state;

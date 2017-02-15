@@ -15,22 +15,11 @@ export default class Login extends Component {
     const { signIn } = this.props;
     const { email, password } = this.state;
 
-    if (!this.validateEmail(this.state.email)) {
+    if (!this.validateEmail(email)) {
       this.setState({
         error: 'Invalid Email'
       });
     } else {
-      // signIn({ email, password })
-      //   .then(response => {
-      //     console.log("YEP DONE HERE");
-      //     browserHistory.push('/');
-      //   }).catch((error) => {
-      //     console.log("CAUGHT ERROR");
-      //     this.setState({
-      //       error: 'Invalid credentials'
-      //     });
-      //   }); 
-
       fetch('/api/users', {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -38,41 +27,20 @@ export default class Login extends Component {
       })
       .then(response => {
         if (response.status >= 400) {
-          console.log("NOPE ERROR");
           this.setState({
             error: 'Invalid Credentials'
           });
         }
         else {
-          console.log("YEP DONE");
           browserHistory.push('/');
+          response.json().then(user => signIn(user.data));
         }
+      })
+      .catch(error => {
+        signInFailed(error);
       });
-
-
     }
   }
-
-  // fetchFavorites(id) {
-  //   fetch(`api/users/${id}/favorites`)
-  //   .then((response) => {
-  //     response.json()
-  //     .then((response) => {
-  //       this.props.recieveUserFavorites(response.data);
-  //       browserHistory.push('/');
-  //     })
-  //   }).catch((error) => {
-  //     console.log(error)
-  //   })
-  // }
-
-  // handleLowerCase() {
-  //   const { email, password } = this.state;
-  //   return {
-  //     email: email.toLowerCase(),
-  //     password: password.toLowerCase()
-  //   }
-  // }
 
   validateEmail(email) {
     let regEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -85,7 +53,6 @@ export default class Login extends Component {
   }
 
   render() {
-    console.log('rendering! ', this.state.error);
     const { email, password, error } = this.state;
     const { user } = this.props;
 

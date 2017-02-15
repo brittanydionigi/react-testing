@@ -12,6 +12,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import fetchMock from 'fetch-mock';
+import { browserHistory } from 'react-router';
 
 import Login from '../../components/Login';
 
@@ -25,8 +26,18 @@ describe('User component', () => {
     }
   };
 
-  const LoginComponent = shallow(<Login user={mockUser.data} />);
-  const MountedLoginComponent = mount(<Login user={mockUser.data} />);
+  const LoginComponent = shallow(<Login user={mockUser.data} signIn={jest.fn()} />);
+
+  afterEach(() => {
+    // assert that all API calls have been intercepted
+    // and handled appropriately. If there is anything
+    // remaining in this array, we done messed up
+    expect(fetchMock.calls().unmatched).toEqual([]);
+
+    // start fresh with fetchMock after each test so that we're
+    // not intercepting API calls that no longer need to be tested
+    fetchMock.restore();
+  });
 
   it('autofills email input if a user is currently logged in', () => {
     let emailInput = LoginComponent.find('input[name="email"]');
@@ -56,8 +67,8 @@ describe('User component', () => {
   it('displays an error message if the credentials do not match', async (done) => {
     fetchMock.post('/api/users', { status: 500, body: {} });
 
-    let emailInput = MountedLoginComponent.find('input[name="email"]');
-    let submitButton = MountedLoginComponent.find('button');
+    let emailInput = LoginComponent.find('input[name="email"]');
+    let submitButton = LoginComponent.find('button');
 
     emailInput.simulate('change', { 
       target: { 
@@ -67,11 +78,11 @@ describe('User component', () => {
     });
     submitButton.simulate('click');
 
-    await MountedLoginComponent.update();
+    await LoginComponent.update();
     let expectedErrorMessage = 'Invalid Credentials';
-    let errorElement = MountedLoginComponent.update().find('.errorMessage');
+    let errorElement = LoginComponent.update().find('.errorMessage');
 
-    expect(MountedLoginComponent.update().state().error).toEqual(`${expectedErrorMessage}`);
+    expect(LoginComponent.update().state().error).toEqual(`${expectedErrorMessage}`);
     expect(errorElement.length).toEqual(1);
     expect(errorElement.text()).toEqual(expectedErrorMessage);
 
@@ -79,7 +90,26 @@ describe('User component', () => {
 
   });
 
-  it('redirects to home route on successful login');
+  it('redirects to home route on successful login', async (done) => {
+    spyOn(browserHistory, 'push');
+    fetchMock.post('/api/users', { status: 200, body: mockUser });
+
+    let emailInput = LoginComponent.find('input[name="email"]');
+    let submitButton = LoginComponent.find('button');
+
+    emailInput.simulate('change', { 
+      target: { 
+        name: 'email',
+        value: 'foo@bar.com'
+      }
+    });
+    submitButton.simulate('click');
+
+    await LoginComponent.update();
+    expect(browserHistory.push).toHaveBeenCalledWith('/');
+
+    done();
+  });
 
 });
 
