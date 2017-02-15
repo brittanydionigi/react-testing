@@ -1,8 +1,11 @@
 export default {
   user: {
-    name: null,
-    id: null,
+    name: 'Bob Loblaw',
+    id: 1,
     favorites: []
   },
-  movies: []
+  movieDb: {
+    movies: [],
+    isCurrentlyFetching: false
+  }
 };

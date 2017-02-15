@@ -8,6 +8,6 @@ import moviesReducer from './moviesReducer';
 export default combineReducers({
   user: userReducer,
   favorites: favoritesReducer,
-  movies: moviesReducer,
+  movieDb: moviesReducer,
   routing: routerReducer,
 });

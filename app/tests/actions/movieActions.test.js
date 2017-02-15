@@ -62,7 +62,7 @@ describe('movieActions', () => {
 
     // intercept our POST request to /api/users, and automatically
     // return a successful status of 201 with our mockUser data
-    fetchMock.get(mockFetchUrl, { status: 200, body: { movies: mockMovies } });
+    fetchMock.get(mockFetchUrl, { status: 200, body: { results: mockMovies } });
 
     // dispatch our logIn function with a made up email/password
     // because it doesn't matter - the request won't fail because
