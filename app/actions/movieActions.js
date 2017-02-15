@@ -4,7 +4,6 @@ export const MOVIES_RECEIVED = 'MOVIES_RECEIVED';
 
 const FETCH_URL = 'https://api.themoviedb.org/3/movie/upcoming?api_key=72dd63e7f1a8c927ce73ad8949399f40&language=en-US&page=1';
 
-
 function moviesReceived(movies) {
   return {
     type: MOVIES_RECEIVED,

@@ -79,7 +79,9 @@ export default class MovieList extends Component {
         { userOptions }
         <Link to="/favorites">Favorites</Link>
         { movieDb.isCurrentlyFetching && <p className="loading">Please wait while we fetch movies...</p> }
-        { movieCards }
+        <div id="movies">
+          { movieCards }
+        </div>
       </div>
     )
   }
