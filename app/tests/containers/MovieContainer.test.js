@@ -61,6 +61,6 @@ describe('MoviesContainer', () => {
 
   // Verify the container correctly bound our action creators as props
   it('should pass down the correct action creators', () => {
-    expect(Object.keys(Component.props())).toContain('fetchMovies', 'signOut');
+    expect(Object.keys(Component.props())).toContain('fetchMovies', 'signOut', 'addFavorite');
   });
 });

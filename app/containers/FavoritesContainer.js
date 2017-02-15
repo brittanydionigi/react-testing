@@ -5,7 +5,7 @@ import favoriteActions from '../actions/favoriteActions';
 import { Favorites } from '../components/Favorites';
 
 function mapStateToProps(state) {
-  return { favorites: state.user.favorites };
+  return { favorites: state.favorites };
 }
 
 function mapDispatchToProps(dispatch) {

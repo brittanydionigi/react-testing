@@ -58,7 +58,7 @@ export default class MovieList extends Component {
   }
 
   render() {
-    const { user, movieDb, signOut } = this.props;
+    const { user, movieDb, signOut, favorites } = this.props;
     const { notification } = this.state;
     let userOptions;
 
@@ -76,6 +76,7 @@ export default class MovieList extends Component {
       <div id="movieList">
         { notification && <p className="notification">{notification}</p> }
         { userOptions }
+        <Link to="/favorites">Favorites</Link>
         { movieDb.isCurrentlyFetching && <p className="loading">Please wait while we fetch movies...</p> }
         { movieCards }
       </div>
