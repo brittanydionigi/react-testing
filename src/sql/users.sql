@@ -25,4 +25,4 @@ CREATE UNIQUE INDEX email ON users (email);
 
 
 INSERT INTO users (name, password, email)
-  VALUES ('Brittany', 'bar', 'foo');
+  VALUES ('Bob Loblaw', 'baz', 'foo@bar.com');
