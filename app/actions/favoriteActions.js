@@ -13,10 +13,10 @@ function addFavorite(movie) {
   }
 };
 
-function deleteFavorite(movie) {
+function deleteFavorite(favoriteId) {
   return {
     type: DELETE_FAVORITE,
-    favorite: movie
+    id: favoriteId
   }
 };
 

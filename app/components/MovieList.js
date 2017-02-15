@@ -51,6 +51,7 @@ export default class MovieList extends Component {
     })
     .then(response => response.json())
     .then(response => {
+      console.log("RESONSE: ", response);
       addFavorite(Object.assign(movie, {id: response.id }));
     }).catch((error) => {
       console.log(error);
