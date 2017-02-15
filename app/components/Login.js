@@ -20,16 +20,36 @@ export default class Login extends Component {
         error: 'Invalid Email'
       });
     } else {
-      signIn({ email, password })
-        .then(response => {
-          console.log("YEP DONE HERE");
-          browserHistory.push('/');
-        }).catch((error) => {
-          console.log("CAUGHT ERROR");
+      // signIn({ email, password })
+      //   .then(response => {
+      //     console.log("YEP DONE HERE");
+      //     browserHistory.push('/');
+      //   }).catch((error) => {
+      //     console.log("CAUGHT ERROR");
+      //     this.setState({
+      //       error: 'Invalid credentials'
+      //     });
+      //   }); 
+
+      fetch('/api/users', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ email, password })
+      })
+      .then(response => {
+        if (response.status >= 400) {
+          console.log("NOPE ERROR");
           this.setState({
-            error: 'Invalid credentials'
+            error: 'Invalid Credentials'
           });
-        }); 
+        }
+        else {
+          console.log("YEP DONE");
+          browserHistory.push('/');
+        }
+      });
+
+
     }
   }
 
@@ -65,6 +85,7 @@ export default class Login extends Component {
   }
 
   render() {
+    console.log('rendering! ', this.state.error);
     const { email, password, error } = this.state;
     const { user } = this.props;
 

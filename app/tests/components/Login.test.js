@@ -10,7 +10,8 @@
 // do, assert that "You can't do that" is rendered.
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import fetchMock from 'fetch-mock';
 
 import Login from '../../components/Login';
 
@@ -25,6 +26,7 @@ describe('User component', () => {
   };
 
   const LoginComponent = shallow(<Login user={mockUser.data} />);
+  const MountedLoginComponent = mount(<Login user={mockUser.data} />);
 
   it('autofills email input if a user is currently logged in', () => {
     let emailInput = LoginComponent.find('input[name="email"]');
@@ -51,7 +53,32 @@ describe('User component', () => {
     expect(errorElement.text()).toEqual(expectedErrorMessage);
   });
 
-  it('displays an error message if the credentials do not match');
+  it('displays an error message if the credentials do not match', async (done) => {
+    fetchMock.post('/api/users', { status: 500, body: {} });
+
+    let emailInput = MountedLoginComponent.find('input[name="email"]');
+    let submitButton = MountedLoginComponent.find('button');
+
+    emailInput.simulate('change', { 
+      target: { 
+        name: 'email',
+        value: 'foo@bar.com'
+      }
+    });
+    submitButton.simulate('click');
+
+    await MountedLoginComponent.update();
+    let expectedErrorMessage = 'Invalid Credentials';
+    let errorElement = MountedLoginComponent.update().find('.errorMessage');
+
+    expect(MountedLoginComponent.update().state().error).toEqual(`${expectedErrorMessage}`);
+    expect(errorElement.length).toEqual(1);
+    expect(errorElement.text()).toEqual(expectedErrorMessage);
+
+    done();
+
+  });
+
   it('redirects to home route on successful login');
 
 });
