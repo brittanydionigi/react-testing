@@ -1,8 +1,8 @@
 export default {
   user: {
-    name: 'Bob Loblaw',
-    id: 1,
-    favorites: []
+    name: null,
+    id: null,
+    email: ''
   },
   movieDb: {
     movies: [],

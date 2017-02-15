@@ -9,7 +9,7 @@ import { SIGN_IN, SIGN_OUT } from '../actions/userActions';
 const initialState = {
   name: null,
   id: null,
-  email: null
+  email: ''
 };
 
 function userReducer(state = initialState, action) {

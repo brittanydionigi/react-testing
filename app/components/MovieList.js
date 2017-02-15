@@ -15,19 +15,21 @@ export default class MovieList extends Component {
   // because if for some reason the component errs out before completing its mount, you'd
   // be making an unecessary server request and storing data that would never be displayed
   componentDidMount(e) {
-    const { fetchMovies } = this.props;
+    const { fetchMovies, movieDb } = this.props;
 
-    fetchMovies()
-      .then(movies => {
-        this.setState({
-          notification: null
+    if (!movieDb.movies.length && !movieDb.isCurrentlyFetching) {
+      fetchMovies()
+        .then(movies => {
+          this.setState({
+            notification: null
+          });
+        })
+        .catch(error => {
+          this.setState({
+            notification: 'Error fetching movies.'
+          });
         });
-      })
-      .catch(error => {
-        this.setState({
-          notification: 'Error fetching movies.'
-        });
-      });
+    }
   }
 
   handleFavorite(movie) {

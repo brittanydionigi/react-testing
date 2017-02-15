@@ -3,7 +3,7 @@ import userReducer from '../../reducers/userReducer';
 const initialState = {
   id: null,
   name: null,
-  email: null
+  email: ''
 };
 
 describe('user reducer', () => {
