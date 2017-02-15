@@ -14,10 +14,18 @@ export default class MovieList extends Component {
   componentDidMount(e) {
     const { fetchMovies } = this.props;
 
-    fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=72dd63e7f1a8c927ce73ad8949399f40&language=en-US&page=1`)
-    .then(response => response.json())
-    .then(response => fetchMovies(response.results))
-    .catch(error => console.log('Error: ', error))
+    fetchMovies()
+      .then(movies => {
+        console.log("SUCCESS! ", response);
+      })
+      .catch(error => {
+        console.log("ERROR! ", error);
+      });
+
+    // fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=72dd63e7f1a8c927ce73ad8949399f40&language=en-US&page=1`)
+    // .then(response => response.json())
+    // .then(response => fetchMovies(response.results))
+    // .catch(error => console.log('Error: ', error))
   }
 
   handleFavorite(movie) {

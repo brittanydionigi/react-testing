@@ -11,12 +11,12 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import fetchMock from 'fetch-mock';
 import { browserHistory } from 'react-router';
+import fetchMock from 'fetch-mock';
 
 import Login from '../../components/Login';
 
-describe('User component', () => {
+describe('Login component', () => {
 
   const mockUser = {
     data: {

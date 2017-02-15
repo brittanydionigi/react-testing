@@ -40,6 +40,6 @@ describe('LoginContainer', () => {
   });
 
   it('should pass down the correct action creators', () => {
-    expect(Object.keys(Component.props())).toContain('signIn', 'signOut');
+    expect(Object.keys(Component.props())).toContain('signIn', 'signOut', 'signInFailed');
   });
 });

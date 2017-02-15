@@ -20,4 +20,10 @@ describe('user reducer', () => {
       user
     })).toEqual(user);
   });
+
+  it('should return to the initialState when action is SIGN_OUT', () => {
+    expect(userReducer(undefined, {
+      type: 'SIGN_OUT',
+    })).toEqual(initialState);
+  });
 });
