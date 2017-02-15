@@ -1,3 +1,7 @@
+// This is an example of testing redux actions when using redux-thunk
+// for things like API calls. 
+
+
 // mocks out a store for us & allows us to apply middleware like thunk
 import configureMockStore from 'redux-mock-store';
 
@@ -8,7 +12,7 @@ import thunk from 'redux-thunk';
 // can control what kind of response we get back
 import fetchMock from 'fetch-mock';
 
-// import any/all of our user actions we want to test
+// import any/all of our movie actions we want to test
 import actions from '../../actions/movieActions';
 
 
@@ -23,11 +27,13 @@ const store = mockStore({
   isCurrentlyFetching: false
 });
 
-// mock out some pretend user data to work with
+// mock out some pretend movies to work with
 // we'll use this as our pretend response from 
 // our API call
 const mockMovies = [1, 2, 3, 4, 5];
 
+// Keep a reference to the URL we are making fetch requests to
+// so we can intercept it accurately with fetchMock
 const mockFetchUrl = 'https://api.themoviedb.org/3/movie/upcoming?api_key=72dd63e7f1a8c927ce73ad8949399f40&language=en-US&page=1';
 
 describe('movieActions', () => {
@@ -60,14 +66,10 @@ describe('movieActions', () => {
       { type: 'MOVIES_RECEIVED', movies: mockMovies }
     ];
 
-    // intercept our POST request to /api/users, and automatically
-    // return a successful status of 201 with our mockUser data
+    // intercept our GET request to mockFetchUrl, and automatically
+    // return a successful status of 200 with our mock movie data
     fetchMock.get(mockFetchUrl, { status: 200, body: { results: mockMovies } });
 
-    // dispatch our logIn function with a made up email/password
-    // because it doesn't matter - the request won't fail because
-    // we are intercepting it with fetchMock and telling it to
-    // return successfully regardless 
     return store.dispatch(actions.fetchMovies())
       .then(() => {
 
@@ -80,16 +82,11 @@ describe('movieActions', () => {
         // test the length to ensure that no 'side effects' occurred as
         // a result of us logging in
         expect(createdActions.length).toEqual(3);
-
-        // expect the first action created to equal the one we stubbed out
-        // earlier -> { type: 'SIGN_IN', user: mockUser.data }
         expect(createdActions).toEqual(expectedActions);
       });
   });
 
   it('creates a REQUEST_IN_PROGRESS and REQUEST_COMPLETE action when fetching movies fails', () => {
-    
-    // mock out what kind of action data we expect to be dispatched
     let expectedActions = [
       { type: 'REQUEST_IN_PROGRESS' },
       { type: 'REQUEST_COMPLETE', status: 'error' }

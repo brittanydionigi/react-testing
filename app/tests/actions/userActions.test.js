@@ -1,21 +1,13 @@
-// mocks out a store for us & allows us to apply middleware like thunk
 import configureMockStore from 'redux-mock-store';
-
-// import any/all of our user actions we want to test
 import actions from '../../actions/userActions';
 
-
-// mock out a store
-const mockStore = configureMockStore();
-
-// create a new store and set its initial state
-// we only need the initial state to include the
-// data that would be effected by our tests
-const store = mockStore();
+// Mock out a store -- this needs double ()'s because configureMockStore
+// returns a function that allows you to configure it before initializing it.
+// We don't need to do any configuration in this case, so we're just going to
+// initialize it right away.
+const store = configureMockStore()();
 
 // mock out some pretend user data to work with
-// we'll use this as our pretend response from 
-// our API call
 const mockUser = {
   data: {
     name: 'Bob Loblaw',
@@ -40,10 +32,7 @@ describe('userActions', () => {
     // mock out what kind of action data we expect to be dispatched
     let expectedAction = { type: 'SIGN_IN', user: mockUser.data };
 
-    // dispatch our signIn function with a made up email/password
-    // because it doesn't matter - the request won't fail because
-    // we are intercepting it with fetchMock and telling it to
-    // return successfully regardless 
+    // dispatch our signIn action with a made up email/password
     store.dispatch(actions.signIn(mockUser.data));
 
     // get any actions that were created as a result of this dispatch

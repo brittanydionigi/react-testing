@@ -10,8 +10,14 @@
 // do, assert that "You can't do that" is rendered.
 
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+
+// importing browserHistory so we can spy on it and
+// verify a user is redirected upon successful login
 import { browserHistory } from 'react-router';
+
+// intercepts API requests made with fetch so we
+// can control what kind of response we get back
 import fetchMock from 'fetch-mock';
 
 import Login from '../../components/Login';
@@ -64,7 +70,13 @@ describe('Login component', () => {
     expect(errorElement.text()).toEqual(expectedErrorMessage);
   });
 
+  // When we have a component method that does something asynchronously (e.g.
+  // updates the state based on the result of a promise), we need to use async/await
+  // to delay our assertions until after the component has had a chance to update
+  // Add the 'done' param to your test function and call it after making all assertions
   it('displays an error message if the credentials do not match', async (done) => {
+
+    // capture our fetch request to /api/users and return an error status
     fetchMock.post('/api/users', { status: 500, body: {} });
 
     let emailInput = LoginComponent.find('input[name="email"]');
@@ -76,22 +88,32 @@ describe('Login component', () => {
         value: 'foo@bar.com'
       }
     });
+
+    // simulate trying to log in with invalid credentials
     submitButton.simulate('click');
 
+    // wait for the component to update
     await LoginComponent.update();
+
     let expectedErrorMessage = 'Invalid Credentials';
     let errorElement = LoginComponent.update().find('.errorMessage');
 
+    // test that our state was updated and we displayed an appropriate error message
     expect(LoginComponent.update().state().error).toEqual(`${expectedErrorMessage}`);
     expect(errorElement.length).toEqual(1);
     expect(errorElement.text()).toEqual(expectedErrorMessage);
 
+    // call done() to let the test runner it can move on now
     done();
-
   });
 
   it('redirects to home route on successful login', async (done) => {
+
+    // spyOn the push method of browserHistory so we can check if and how
+    // it was called when we successfully login with valid credentials
     spyOn(browserHistory, 'push');
+
+    // capture our fetch request to /api/users and return a successful response
     fetchMock.post('/api/users', { status: 200, body: mockUser });
 
     let emailInput = LoginComponent.find('input[name="email"]');
@@ -103,11 +125,17 @@ describe('Login component', () => {
         value: 'foo@bar.com'
       }
     });
+
+    // simulate trying to login with valid credentials
     submitButton.simulate('click');
 
+    // wait for the component to update
     await LoginComponent.update();
+
+    // verify that browserHistory.push was called and it pushed us to the '/' route
     expect(browserHistory.push).toHaveBeenCalledWith('/');
 
+    // call done() to let the test runner it can move on now
     done();
   });
 
